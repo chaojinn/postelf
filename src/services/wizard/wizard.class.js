@@ -229,7 +229,8 @@ class Service {
       dbAddress:data.dbAddress,
       dbUSer:data.dbUSer,
       dbPassword:data.dbPassword,
-      dbName:data.dbName
+      dbName:data.dbName,
+      sudoPassword:data.sudoPassword,
     };
     fs.writeFileSync(path,JSON.stringify(installed, null, 2),{mode:0o744});
     return {code:200};

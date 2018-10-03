@@ -4,7 +4,7 @@ class Service {
     const fs = require('fs');
     const path = require('path');
     const { Pool } = require('pg')
-    this.id=1;
+    this.id="userId";
     this.scriptName = "["+path.basename(__filename)+"] ";
     let fPath=__dirname+"/../../../config/installed.json";
     if(fs.existsSync(fPath)){
@@ -29,12 +29,10 @@ class Service {
   async find(params) {
     let pConnect=undefined;
     try{
-      let success=false;
-      let error=null;
       pConnect=await this.dbPool.connect();
-      const res = await pConnect.query('SELECT username , password FROM admin WHERE username=$1', [params.query.email]);
+      const res = await pConnect.query('SELECT id, username , password FROM admin WHERE username=$1 AND active=1', [params.query.email]);
       if(res.rows.length){
-        return [{email:res.rows[0].username,password:res.rows[0].password}];
+        return [{userId:res.rows[0].id, email:res.rows[0].username,password:res.rows[0].password}];
       }
       else{
         return [];
@@ -47,10 +45,32 @@ class Service {
     finally{
       if(pConnect)
         pConnect.release();
-      
     }
     //return [{email:"123@123",password:"$2a$04$YMIz1.dY/27lGbcewng8BOjZNKmGHXWL7mRXwy3uHaMQdL/ynlJ3m"}];
   }
+  
+  async get (id, params) {
+    let pConnect=undefined;
+    try{
+      pConnect=await this.dbPool.connect();
+      const res = await pConnect.query('SELECT id, username , password FROM admin WHERE id=$1 AND active=1 ', [id]);
+      if(res.rows.length){
+        return {userId:res.rows[0].id, email:res.rows[0].username,password:res.rows[0].password};
+      }
+      else{
+        return {error:"user not found"};
+      }
+    }
+    catch(err){
+      console.error(this.scriptName+"[find] error:"+err.toString());
+      return {error:err.toString()};
+    }
+    finally{
+      if(pConnect)
+        pConnect.release();
+    }
+  }
+  
   async create (data, params) {
     
     console.log("users post");

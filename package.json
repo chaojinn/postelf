@@ -3,7 +3,7 @@
   "description": "a web based solution for email server/client based on postfix",
   "version": "0.0.6",
   "homepage": "",
-  "license" : "MIT",
+  "license": "MIT",
   "main": "src",
   "keywords": [
     "postfix",
@@ -36,6 +36,9 @@
     "mocha": "mocha test/ --recursive --exit"
   },
   "dependencies": {
+    "@feathersjs/authentication": "^2.1.11",
+    "@feathersjs/authentication-jwt": "^2.0.5",
+    "@feathersjs/authentication-local": "^1.2.5",
     "@feathersjs/configuration": "^2.0.0",
     "@feathersjs/errors": "^3.3.0",
     "@feathersjs/express": "^1.2.3",
