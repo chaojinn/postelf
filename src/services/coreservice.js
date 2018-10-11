@@ -26,7 +26,7 @@ app.use('postelf-core', {
   
   createFolderAllowPath:["/etc/postfix/certs"],
   writeFileAllowPath:["/etc/sasl2/smtpd.conf","/etc/dovecot/dovecot.conf","/etc/dovecot/dovecot-sql.conf","/etc/postfix/virtual.cf","/etc/postfix/vmailbox.cf","/etc/postfix/main.cf","/etc/postfix/master.cf","/etc/postfix/certs/server.key","/etc/postfix/certs/server.csr","/etc/postfix/certs/server.crt"],
-  restartServiceAllowService:["postfix","dovecot","saslauthd"],
+  restartServiceAllowService:["postfix","dovecot","saslauthd", "postgresql"],
   async update (id, data, params) {
      console.log("["+scriptName+"] request received:"+JSON.stringify(data));
       if(data.cmd=="createFolder"){

@@ -12,9 +12,7 @@ const checkCoreRunning = () => {
   }
 } ;
 
-
 module.exports = {
-  
   before: {
     all: [
       authentication.hooks.authenticate('jwt'), //verify user is authorized

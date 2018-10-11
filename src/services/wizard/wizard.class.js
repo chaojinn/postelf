@@ -147,18 +147,18 @@ class Service {
     
     //check if service is enabled
     pkgDependency=["postgresql","postfix","dovecot","saslauthd"];
-    const systemctl = require('systemctl')
+    const systemctl = require('../../utils/systemctl');
     for(i=0;i<pkgDependency.length;i++)
     {
       let serviceEnabled=false;
-      let jobService=systemctl.isEnabled('postfix').then(enabled => {
+      let jobService=systemctl.isActive(pkgDependency[i]).then(enabled => {
         serviceEnabled=enabled;
       })
       await jobService;
       if(serviceEnabled)
         ret.push({name:"Service "+pkgDependency[i]});
       else
-        ret.push({name:"Service "+pkgDependency[i],error:"no enabled"});
+        ret.push({name:"Service "+pkgDependency[i],error:"no activated"});
     }
     console.log(this.scriptName+"access service done");
     console.log(this.scriptName+"result returned:"+ret);
@@ -818,7 +818,7 @@ class Service {
       let jobRestart=this.restartServiceAsRoot(service);
       await jobRestart;
       if(jobRestart.error){
-        arrRet.push({cmd:'service restart '+service, error:jobRestart.toString()});
+        arrRet.push({cmd:'service restart '+service, error:jobRestart.error.toString()});
       }
       else{
         arrRet.push({cmd:'service restart '+service});
